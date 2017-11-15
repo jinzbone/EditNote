@@ -1,37 +1,87 @@
 package frame;
-
+////±£´æ£¬Èç¹ûÊÇ¸Ä±äÒÑ¾­±£´æ¹ıµÄÄÚÈİ£¬²»ĞèÒªµ¯³ö¶Ô»°¿ò
+////¹Ø±ÕµÄÊ±ºò£¬Èç¹ûµãÈ¡Ïû£¬ÒªÔõÃ´´¦Àí
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
-public class MyFrame {
+public class MyFrame extends JFrame implements DocumentListener{
+	
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * @param args
 	 */
-	public static JFrame myFrame;
 	
+	public static MyFrame myFrame;
+////	»»³Éprivate
+	public static JMenuItem newbuild;
+	public static JMenuItem open;
+	public static JMenuItem save;
+	public static JMenuItem another;
+	public static JMenuItem exit;
+	public static JMenuItem undo;
+	public static JMenuItem cut;
+	public static JMenuItem copy;
+	public static JMenuItem paste;
+	public static JMenuItem delete;
+	public static JMenuItem all;
+	public static JMenuItem font;
+	public static JMenuItem status;
+	public static JMenuItem lookforhelp;
+	public static JMenuItem about;
+	public static JTextArea area;
+	public static boolean flag = false;
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		MyFrame mf = new MyFrame();
-		mf.initFrame();
-		mf.addMenu();
+		myFrame = new MyFrame();
+		myFrame.initFrame();
+		myFrame.addMenu();
+		new AddListener().addListener();
 		
+		area.getDocument().addDocumentListener(myFrame);
+		myFrame.addWindowListener(new WindowAdapter(){
+
+			public void windowClosing(WindowEvent e) {
+				// TODO Auto-generated method stub
+				super.windowClosing(e);
+				if(MyFrame.flag==true){//Èç¹ûJTextAreaÄÚÈİ¸Ä±äÁË
+					int res = JOptionPane.showConfirmDialog(null, "ÊÇ·ñ±£´æ","¼ÇÊÂ±¾",JOptionPane.YES_NO_CANCEL_OPTION);
+					if(res == JOptionPane.YES_OPTION){/////Èç¹ûÈ·¶¨£¨È·¶¨±£´æ£©
+						AddListener.save();
+					}else if(res == JOptionPane.CANCEL_OPTION){/////Èç¹ûµãÈ¡Ïû
+						
+					}else if(res == JOptionPane.NO_OPTION){/////Èç¹ûÑ¡Ôñ²»±£´æ
+						System.exit(0);
+					}
+				}
+				else{
+					MyFrame.area.setText("");
+				}
+			}
+		});
 		
 		myFrame.setVisible(true);
 	}
-	public void initFrame(){//å¯ä»¥ç”¨myFrame
-		myFrame = new JFrame();
+	public void initFrame(){
 		Toolkit toolKit = Toolkit.getDefaultToolkit();
 		Dimension screen = toolKit.getScreenSize();
 		int width = screen.width;
@@ -40,57 +90,56 @@ public class MyFrame {
 		myFrame.setLocation(width/4,height/5);
 		Image icon = new ImageIcon("icon.jpg").getImage();
 		myFrame.setIconImage(icon);
-		/*****************æ ‡é¢˜******************/
+		/*****************±êÌâ******************/
 		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
 	}
-	/*æ·»åŠ èœå•å’Œä¹¦å†™åŒº*/
+	/*Ìí¼Ó²Ëµ¥ºÍÊéĞ´Çø*/
 	public void addMenu(){
 		JMenuBar mb = new JMenuBar();
-		/****************JMenuBarä¸­çš„JMenu******************/
-		JMenu file = new JMenu("æ–‡ä»¶(F)");
-		JMenu edit = new JMenu("ç¼–è¾‘(E)");
-		JMenu format = new JMenu("æ ¼å¼(O)");
-		JMenu view = new JMenu("æŸ¥çœ‹(V)");
-		JMenu help =new JMenu("å¸®åŠ©(H)");
-		/*****************JMenuä¸­çš„JMenuItem****************/
-		//fileä¸­çš„JMenuItem
-		JMenuItem newbuild = new JMenuItem("æ–°å»º(N)");
-		JMenuItem open = new JMenuItem("æ‰“å¼€(O)");
-		JMenuItem save = new JMenuItem("ä¿å­˜(S)");
-		JMenuItem another = new JMenuItem("å¦å­˜ä¸º(A)");
-		JMenuItem exit = new JMenuItem("é€€å‡º(E)");
-		//editä¸­çš„JMenuItem
-		JMenuItem undo = new JMenuItem("æ’¤é”€(U)");
-		JMenuItem cut = new JMenuItem("å‰ªåˆ‡(X)");
-		JMenuItem copy = new JMenuItem("å¤åˆ¶(C)");
-		JMenuItem paste = new JMenuItem("ç²˜è´´(P)");
-		JMenuItem delete = new JMenuItem("åˆ é™¤(L)");
-		JMenuItem all = new JMenuItem("å…¨é€‰(A)");
-		//formatä¸­çš„JMenuItem
-		JMenuItem font = new JMenuItem("å­—ä½“(F)");
-		//viewä¸­çš„JMenuItem
-		JMenuItem status = new JMenuItem("çŠ¶æ€æ (S)");
-		//helpä¸­çš„JMenuItem
-		JMenuItem lookforhelp = new JMenuItem("æŸ¥çœ‹å¸®åŠ©(H)");
-		JMenuItem about = new JMenuItem("å…³äºè®°äº‹æœ¬(A)");
-		/***********åœ¨frameä¸­æ·»åŠ JMenuBar***********/
+		/****************JMenuBarÖĞµÄJMenu******************/
+		JMenu file = new JMenu("ÎÄ¼ş(F)");
+		JMenu edit = new JMenu("±à¼­(E)");
+		JMenu format = new JMenu("¸ñÊ½(O)");
+		JMenu view = new JMenu("²é¿´(V)");
+		JMenu help =new JMenu("°ïÖú(H)");
+		/*****************JMenuÖĞµÄJMenuItem****************/
+		//fileÖĞµÄJMenuItem
+		newbuild = new JMenuItem("ĞÂ½¨(N)");
+		open = new JMenuItem("´ò¿ª(O)");
+		save = new JMenuItem("±£´æ(S)");
+		another = new JMenuItem("Áí´æÎª(A)");
+		exit = new JMenuItem("ÍË³ö(E)");
+		//editÖĞµÄJMenuItem
+		undo = new JMenuItem("³·Ïú(U)");
+		cut = new JMenuItem("¼ôÇĞ(X)");
+		copy = new JMenuItem("¸´ÖÆ(C)");
+		paste = new JMenuItem("Õ³Ìù(P)");
+		delete = new JMenuItem("É¾³ı(L)");
+		all = new JMenuItem("È«Ñ¡(A)");
+		//formatÖĞµÄJMenuItem
+		font = new JMenuItem("×ÖÌå(F)");
+		//viewÖĞµÄJMenuItem
+		status = new JMenuItem("×´Ì¬À¸(S)");
+		//helpÖĞµÄJMenuItem
+		lookforhelp = new JMenuItem("²é¿´°ïÖú(H)");
+		about = new JMenuItem("¹ØÓÚ¼ÇÊÂ±¾(A)");
+		/***********ÔÚframeÖĞÌí¼ÓJMenuBar***********/
 		myFrame.setJMenuBar(mb);
-		/***********åœ¨JMenuBarä¸­æ·»åŠ JMenu***********/
+		/***********ÔÚJMenuBarÖĞÌí¼ÓJMenu***********/
 		mb.add(file);
 		mb.add(edit);
 		mb.add(format);
 		mb.add(view);
 		mb.add(help);
-		/***********åˆ†åˆ«åœ¨JMenuä¸­æ·»åŠ JMenuItem********/
-		//åœ¨fileä¸­æ·»åŠ 
+		/***********·Ö±ğÔÚJMenuÖĞÌí¼ÓJMenuItem********/
+		//ÔÚfileÖĞÌí¼Ó
 		file.add(newbuild);
 		file.add(open);
 		file.add(save);
 		file.add(another);
 		file.addSeparator();
 		file.add(exit);
-	    //åœ¨editä¸­æ·»åŠ 
+	    //ÔÚeditÖĞÌí¼Ó
 		edit.add(undo);
 		edit.addSeparator();
 		edit.add(cut);
@@ -99,24 +148,35 @@ public class MyFrame {
 		edit.add(delete);
 		edit.addSeparator();
 		edit.add(all);
-		//åœ¨formatä¸­æ·»åŠ 
+		//ÔÚformatÖĞÌí¼Ó
 		format.add(font);
-		//åœ¨viewä¸­æ·»åŠ 
+		//ÔÚviewÖĞÌí¼Ó
 		view.add(status);
-		//åœ¨helpä¸­æ·»åŠ 
+		//ÔÚhelpÖĞÌí¼Ó
 		help.add(lookforhelp);
 		help.addSeparator();
 		help.add(about);
 		
 		/************JTextArea***************/
-		JTextArea area = new JTextArea();
+		area = new JTextArea("");
 		myFrame.add(area);
 		JScrollPane scroller = new JScrollPane(area);
 		scroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		//frame.getContentPane().add(BorderLayout.CENTER,scroller);
 		myFrame.add(BorderLayout.CENTER,scroller);
 		
-		
 	}
+	public void insertUpdate(DocumentEvent e) {
+		// TODO Auto-generated method stub
+		flag = true;
+	}
+	public void removeUpdate(DocumentEvent e) {
+		// TODO Auto-generated method stub
+		flag = true;
+	}
+	public void changedUpdate(DocumentEvent e) {
+		// TODO Auto-generated method stub
+		flag = true;
+	}
+	
 }
