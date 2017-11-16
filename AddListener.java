@@ -114,34 +114,29 @@ class AddListener implements ActionListener {
 //		打开文件
 		else if (e.getSource().equals(MyFrame.open)) {
 			/***打开文件的对话框***/
-			if(MyFrame.flag == true) AddListener.showDiaSave();
-			StringBuffer  text = new StringBuffer();
-			FileDialog fileDia = new FileDialog(MyFrame.myFrame, "打开文件", FileDialog.LOAD);
-			fileDia.setResizable(false);
-			fileDia.setVisible(true);
-			openFile = new File(fileDia.getDirectory(),fileDia.getFile());
-			flag = true;//表示已经存在
-			try {
-				file = new File(fileDia.getDirectory(),fileDia.getFile());
-				fr = new FileReader(file);
-				br = new BufferedReader(fr);
-				String s = "";
-				while((s = br.readLine())!=null)
-					text.append(s + "\n");
-				br.close();
-				fr.close();
-			} catch (FileNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			if(MyFrame.flag == true){
+				int res = JOptionPane.showConfirmDialog(null, "是否保存","记事本",JOptionPane.YES_NO_CANCEL_OPTION);
+				if(res == JOptionPane.YES_OPTION){
+					if(flag == true){//如果是已经存在的文件
+						AddListener.save();
+					}else{
+						AddListener.showDiaSave();
+					}	
+					MyFrame.flag = false;
+					new AddListener().openFile();
+				}
+				else if(res == JOptionPane.CANCEL_OPTION){
+					
+				}else if(res == JOptionPane.NO_OPTION){
+					new AddListener().openFile();
+				}
 			}
-			MyFrame.area.setText(text.toString());
-			
+			else{
+				new AddListener().openFile();
+			}
 		}
 	}
-	/*另存为文件**单独出一个方法来*/
+	/*showDiaSave是用来：如果不是已经存在的文件，则需要弹出一个另存为对话框来保存.*/
 	public static void showDiaSave(){
 		chooser = new JFileChooser();
 		result = chooser.showSaveDialog(MyFrame.myFrame);
@@ -157,6 +152,7 @@ class AddListener implements ActionListener {
 			}
 		}
 	}
+	/*save是用来：如果是已经存在的文件，就直接保存而不需要弹出对话框.*/
 	public static void save(){
 		if(result == JFileChooser.APPROVE_OPTION){
 			try {
@@ -168,5 +164,30 @@ class AddListener implements ActionListener {
 				e1.printStackTrace();
 			}
 		}
+	}
+	public void openFile(){
+		StringBuffer  text = new StringBuffer();
+		FileDialog fileDia = new FileDialog(MyFrame.myFrame, "打开文件", FileDialog.LOAD);
+		fileDia.setResizable(false);
+		fileDia.setVisible(true);
+		openFile = new File(fileDia.getDirectory(),fileDia.getFile());
+		flag = true;//表示已经存在
+		try {
+			file = new File(fileDia.getDirectory(),fileDia.getFile());
+			fr = new FileReader(file);
+			br = new BufferedReader(fr);
+			String s = "";
+			while((s = br.readLine())!=null)
+				text.append(s + "\n");
+			br.close();
+			fr.close();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		MyFrame.area.setText(text.toString());
 	}
 }
