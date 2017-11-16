@@ -1,6 +1,12 @@
 package frame;
-////±£´æ£¬Èç¹ûÊÇ¸Ä±äÒÑ¾­±£´æ¹ıµÄÄÚÈİ£¬²»ĞèÒªµ¯³ö¶Ô»°¿ò
-////¹Ø±ÕµÄÊ±ºò£¬Èç¹ûµãÈ¡Ïû£¬ÒªÔõÃ´´¦Àí
+////ä¿å­˜ï¼Œå¦‚æœä¸è¯¥ç›®å½•ä¸‹å¦ä¸€æ–‡ä»¶é‡åï¼Œå°±å¼¹å‡ºæç¤º.
+////å…³é—­çš„æ—¶å€™ï¼Œå¦‚æœç‚¹å–æ¶ˆï¼Œä¸è¦é€€å‡ºå».
+////å¦‚æœæ”¹å˜äº†JTextAreaå†…å®¹ï¼Œè¿™æ—¶å€™ç‚¹ æ‰“å¼€ ï¼Œè¦å¼¹å‡ºæ˜¯å¦ä¿å­˜å¯¹è¯æ¡†.å¦‚æœæ˜¯yes,è‹¥æ˜¯å·²å­˜åœ¨çš„æ–‡ä»¶ï¼Œç›´æ¥ä¿å­˜.è‹¥ä¸æ˜¯ï¼Œè¦å¦å­˜ä¸º.
+/**æ–°å»º.æ²¡é—®é¢˜äº†.MyFrame.flagæ˜¯ç”¨æ¥æ£€æµ‹JTextAreaå†…å®¹æ˜¯å¦æ”¹å˜
+ * 			 AddListener.flagæ˜¯ç”¨æ¥æ£€æµ‹æ˜¯ä¸æ˜¯å·²ç»å­˜åœ¨çš„æ–‡ä»¶.ç›®å‰åªåœ¨ æ‰“å¼€ é‡Œæ”¹å˜äº†flag,ä¸€æ‰“å¼€å°±è¯´æ˜æ–‡ä»¶å­˜åœ¨ï¼Œç‚¹ä¿å­˜ä¸éœ€è¦å¼¹å‡ºå¯¹è¯æ¡†ï¼Œç›´æ¥ä¿å­˜.
+ * 
+ * 
+ * **/
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -32,7 +38,7 @@ public class MyFrame extends JFrame implements DocumentListener{
 	 */
 	
 	public static MyFrame myFrame;
-////	»»³Éprivate
+////	æ¢æˆprivate
 	public static JMenuItem newbuild;
 	public static JMenuItem open;
 	public static JMenuItem save;
@@ -63,14 +69,14 @@ public class MyFrame extends JFrame implements DocumentListener{
 			public void windowClosing(WindowEvent e) {
 				// TODO Auto-generated method stub
 				super.windowClosing(e);
-				if(MyFrame.flag==true){//Èç¹ûJTextAreaÄÚÈİ¸Ä±äÁË
-					int res = JOptionPane.showConfirmDialog(null, "ÊÇ·ñ±£´æ","¼ÇÊÂ±¾",JOptionPane.YES_NO_CANCEL_OPTION);
-					if(res == JOptionPane.YES_OPTION){/////Èç¹ûÈ·¶¨£¨È·¶¨±£´æ£©
-						AddListener.save();
-					}else if(res == JOptionPane.CANCEL_OPTION){/////Èç¹ûµãÈ¡Ïû
+				if(MyFrame.flag==true){//å¦‚æœJTextAreaå†…å®¹æ”¹å˜äº†
+					int res = JOptionPane.showConfirmDialog(null, "æ˜¯å¦ä¿å­˜","è®°äº‹æœ¬",JOptionPane.YES_NO_CANCEL_OPTION);
+					if(res == JOptionPane.YES_OPTION){/////å¦‚æœç¡®å®šï¼ˆç¡®å®šä¿å­˜ï¼‰
+						AddListener.showDiaSave();
+					}else if(res == JOptionPane.CANCEL_OPTION){/////å¦‚æœç‚¹å–æ¶ˆ
 						
-					}else if(res == JOptionPane.NO_OPTION){/////Èç¹ûÑ¡Ôñ²»±£´æ
-						System.exit(0);
+					}else if(res == JOptionPane.NO_OPTION){/////å¦‚æœé€‰æ‹©ä¸ä¿å­˜
+						//System.exit(0);
 					}
 				}
 				else{
@@ -90,56 +96,56 @@ public class MyFrame extends JFrame implements DocumentListener{
 		myFrame.setLocation(width/4,height/5);
 		Image icon = new ImageIcon("icon.jpg").getImage();
 		myFrame.setIconImage(icon);
-		/*****************±êÌâ******************/
+		/*****************æ ‡é¢˜******************/
 		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-	/*Ìí¼Ó²Ëµ¥ºÍÊéĞ´Çø*/
+	/*æ·»åŠ èœå•å’Œä¹¦å†™åŒº*/
 	public void addMenu(){
 		JMenuBar mb = new JMenuBar();
-		/****************JMenuBarÖĞµÄJMenu******************/
-		JMenu file = new JMenu("ÎÄ¼ş(F)");
-		JMenu edit = new JMenu("±à¼­(E)");
-		JMenu format = new JMenu("¸ñÊ½(O)");
-		JMenu view = new JMenu("²é¿´(V)");
-		JMenu help =new JMenu("°ïÖú(H)");
-		/*****************JMenuÖĞµÄJMenuItem****************/
-		//fileÖĞµÄJMenuItem
-		newbuild = new JMenuItem("ĞÂ½¨(N)");
-		open = new JMenuItem("´ò¿ª(O)");
-		save = new JMenuItem("±£´æ(S)");
-		another = new JMenuItem("Áí´æÎª(A)");
-		exit = new JMenuItem("ÍË³ö(E)");
-		//editÖĞµÄJMenuItem
-		undo = new JMenuItem("³·Ïú(U)");
-		cut = new JMenuItem("¼ôÇĞ(X)");
-		copy = new JMenuItem("¸´ÖÆ(C)");
-		paste = new JMenuItem("Õ³Ìù(P)");
-		delete = new JMenuItem("É¾³ı(L)");
-		all = new JMenuItem("È«Ñ¡(A)");
-		//formatÖĞµÄJMenuItem
-		font = new JMenuItem("×ÖÌå(F)");
-		//viewÖĞµÄJMenuItem
-		status = new JMenuItem("×´Ì¬À¸(S)");
-		//helpÖĞµÄJMenuItem
-		lookforhelp = new JMenuItem("²é¿´°ïÖú(H)");
-		about = new JMenuItem("¹ØÓÚ¼ÇÊÂ±¾(A)");
-		/***********ÔÚframeÖĞÌí¼ÓJMenuBar***********/
+		/****************JMenuBarä¸­çš„JMenu******************/
+		JMenu file = new JMenu("æ–‡ä»¶(F)");
+		JMenu edit = new JMenu("ç¼–è¾‘(E)");
+		JMenu format = new JMenu("æ ¼å¼(O)");
+		JMenu view = new JMenu("æŸ¥çœ‹(V)");
+		JMenu help =new JMenu("å¸®åŠ©(H)");
+		/*****************JMenuä¸­çš„JMenuItem****************/
+		//fileä¸­çš„JMenuItem
+		newbuild = new JMenuItem("æ–°å»º(N)");
+		open = new JMenuItem("æ‰“å¼€(O)");
+		save = new JMenuItem("ä¿å­˜(S)");
+		another = new JMenuItem("å¦å­˜ä¸º(A)");
+		exit = new JMenuItem("é€€å‡º(E)");
+		//editä¸­çš„JMenuItem
+		undo = new JMenuItem("æ’¤é”€(U)");
+		cut = new JMenuItem("å‰ªåˆ‡(X)");
+		copy = new JMenuItem("å¤åˆ¶(C)");
+		paste = new JMenuItem("ç²˜è´´(P)");
+		delete = new JMenuItem("åˆ é™¤(L)");
+		all = new JMenuItem("å…¨é€‰(A)");
+		//formatä¸­çš„JMenuItem
+		font = new JMenuItem("å­—ä½“(F)");
+		//viewä¸­çš„JMenuItem
+		status = new JMenuItem("çŠ¶æ€æ (S)");
+		//helpä¸­çš„JMenuItem
+		lookforhelp = new JMenuItem("æŸ¥çœ‹å¸®åŠ©(H)");
+		about = new JMenuItem("å…³äºè®°äº‹æœ¬(A)");
+		/***********åœ¨frameä¸­æ·»åŠ JMenuBar***********/
 		myFrame.setJMenuBar(mb);
-		/***********ÔÚJMenuBarÖĞÌí¼ÓJMenu***********/
+		/***********åœ¨JMenuBarä¸­æ·»åŠ JMenu***********/
 		mb.add(file);
 		mb.add(edit);
 		mb.add(format);
 		mb.add(view);
 		mb.add(help);
-		/***********·Ö±ğÔÚJMenuÖĞÌí¼ÓJMenuItem********/
-		//ÔÚfileÖĞÌí¼Ó
+		/***********åˆ†åˆ«åœ¨JMenuä¸­æ·»åŠ JMenuItem********/
+		//åœ¨fileä¸­æ·»åŠ 
 		file.add(newbuild);
 		file.add(open);
 		file.add(save);
 		file.add(another);
 		file.addSeparator();
 		file.add(exit);
-	    //ÔÚeditÖĞÌí¼Ó
+	    //åœ¨editä¸­æ·»åŠ 
 		edit.add(undo);
 		edit.addSeparator();
 		edit.add(cut);
@@ -148,11 +154,11 @@ public class MyFrame extends JFrame implements DocumentListener{
 		edit.add(delete);
 		edit.addSeparator();
 		edit.add(all);
-		//ÔÚformatÖĞÌí¼Ó
+		//åœ¨formatä¸­æ·»åŠ 
 		format.add(font);
-		//ÔÚviewÖĞÌí¼Ó
+		//åœ¨viewä¸­æ·»åŠ 
 		view.add(status);
-		//ÔÚhelpÖĞÌí¼Ó
+		//åœ¨helpä¸­æ·»åŠ 
 		help.add(lookforhelp);
 		help.addSeparator();
 		help.add(about);
