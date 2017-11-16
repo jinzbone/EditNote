@@ -20,7 +20,10 @@ class AddListener implements ActionListener {
 	File file;
 	FileReader fr;
 	BufferedReader br;
-	
+	public static JFileChooser chooser;
+	public static int result;
+	public static File openFile;
+	public static boolean flag = false;
 	public void addListener() {
 		MyFrame.exit.addActionListener(this);
 		MyFrame.about.addActionListener(this);
@@ -42,15 +45,19 @@ class AddListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getSource().equals(MyFrame.exit)) {
+			if(MyFrame.flag==true){
+				
+			}
 			System.exit(0);
 		} else if (e.getSource().equals(MyFrame.about)) {
 			
 		} else if (e.getSource().equals(MyFrame.all)) {
 
 		}
-		//Áí´æÎª£ºÊÇ²»¹ÜÊÇ²»ÊÇÖ®Ç°µÄ£¬¶¼µ¯³ö±£´æ¶Ô»°¿òÀ´±£´æ.ËùÒÔ£¬ÄãµÄ±£´æ·½·¨£¬Ó¦¸ÃÊÇÁí´æÎªµÄ·½·¨²Å¶Ô¡£ÏşµÃÁËÂğ¡£
+		//å¦å­˜ä¸ºï¼šæ˜¯ä¸ç®¡æ˜¯ä¸æ˜¯ä¹‹å‰çš„ï¼Œéƒ½å¼¹å‡ºä¿å­˜å¯¹è¯æ¡†æ¥ä¿å­˜.æ‰€ä»¥ï¼Œä½ çš„ä¿å­˜æ–¹æ³•ï¼Œåº”è¯¥æ˜¯å¦å­˜ä¸ºçš„æ–¹æ³•æ‰å¯¹ã€‚æ™“å¾—äº†å—ã€‚
+		//////å¦å¤–ï¼Œå¦‚æœé€‰æ‹©è¦†ç›–å·²ç»å­˜åœ¨çš„æ–‡ä»¶ï¼Œåˆ™è¦å¼¹å‡ºå¯¹è¯æ¡†æ˜¯å¦è¦†ç›–ã€‚
 		else if (e.getSource().equals(MyFrame.another)) {
-			AddListener.save();
+			AddListener.showDiaSave();
 		} else if (e.getSource().equals(MyFrame.copy)) {
 
 		} else if (e.getSource().equals(MyFrame.cut)) {
@@ -62,19 +69,22 @@ class AddListener implements ActionListener {
 		} else if (e.getSource().equals(MyFrame.lookforhelp)) {
 
 		}
-		/***ĞÂ½¨ÎÄ±¾ÎÄµµ***/ 
+		/***æ–°å»ºæ–‡æœ¬æ–‡æ¡£***/ 
 		else if (e.getSource().equals(MyFrame.newbuild)) {
-			/****Èç¹ûÔ­ÎÄµµÃ»±»¸Ä±ä£¬¾ÍÖ±½Ó½«ÆäÒş²Ø£¬ÔÙĞÂ½¨¡£****/
-//////		·ñÔò£¬¾ÍÏÈÑ¯ÎÊÊÇ·ñ±£´æ£¬ÔÙ½«ÆäÒş²Ø£¬ÔÙĞÂ½¨ 
-			if(MyFrame.flag==true){//Èç¹ûJTextAreaÄÚÈİ¸Ä±äÁË
-				int res = JOptionPane.showConfirmDialog(null, "ÊÇ·ñ±£´æ","¼ÇÊÂ±¾",JOptionPane.YES_NO_CANCEL_OPTION);
-				if(res==JOptionPane.YES_OPTION){//Èç¹ûÈ·¶¨£¨È·¶¨±£´æ£©
-					AddListener.save();
-				}
-				else if(res == JOptionPane.CANCEL_OPTION){/////Èç¹ûµãÈ¡Ïû
-					
-				}else if(res == JOptionPane.NO_OPTION){/////Èç¹ûÑ¡Ôñ²»±£´æ
+			/****å¦‚æœåŸæ–‡æ¡£æ²¡è¢«æ”¹å˜ï¼Œå°±ç›´æ¥å°†å…¶éšè—ï¼Œå†æ–°å»ºã€‚****/
+//////		å¦åˆ™ï¼Œå°±å…ˆè¯¢é—®æ˜¯å¦ä¿å­˜ï¼Œå†å°†å…¶éšè—ï¼Œå†æ–°å»º 
+			if(MyFrame.flag == true){//å¦‚æœJTextAreaå†…å®¹æ”¹å˜äº†
+				int res = JOptionPane.showConfirmDialog(null, "æ˜¯å¦ä¿å­˜","è®°äº‹æœ¬",JOptionPane.YES_NO_CANCEL_OPTION);
+				if(res==JOptionPane.YES_OPTION){//å¦‚æœç¡®å®šï¼ˆç¡®å®šä¿å­˜ï¼‰
+					AddListener.showDiaSave();
 					MyFrame.area.setText("");
+					MyFrame.flag = false;
+				}
+				else if(res == JOptionPane.CANCEL_OPTION){/////å¦‚æœç‚¹å–æ¶ˆ
+					
+				}else if(res == JOptionPane.NO_OPTION){/////å¦‚æœé€‰æ‹©ä¸ä¿å­˜
+					MyFrame.area.setText("");
+					MyFrame.flag = false;
 				}
 			}
 			else{
@@ -85,22 +95,32 @@ class AddListener implements ActionListener {
 		} else if (e.getSource().equals(MyFrame.status)) {
 
 		}
-		/*ÊµÏÖ±£´æÎÄ¼ş*/
-		///////±£´æ£ºÈç¹ûÊÇÔÚÒÑ¾­´ò¿ªµÄÎÄ¼şÀï¸Ä£¬µã±£´æ¾Í²»ÓÃµ¯³ö¶Ô»°¿ò.
+		/*å®ç°ä¿å­˜æ–‡ä»¶*/
+		///////ä¿å­˜ï¼šå¦‚æœæ˜¯åœ¨å·²ç»æ‰“å¼€çš„æ–‡ä»¶é‡Œæ”¹ï¼Œç‚¹ä¿å­˜å°±ä¸ç”¨å¼¹å‡ºå¯¹è¯æ¡†.
 			 
 		else if (e.getSource().equals(MyFrame.save)) {
-			AddListener.save();
+			if(flag == true){//å¦‚æœæ˜¯å·²ç»å­˜åœ¨çš„æ–‡ä»¶ä¿®æ”¹ï¼Œä¸éœ€è¦å¼¹å‡ºå¯¹è¯æ¡†.
+					//å¯èƒ½åœ¨ Openæ—¶ï¼Œä¿å­˜ä¸‹è¿™ä¸ªæ–‡ä»¶ï¼Œflagè®¾ç½®ä¸ºtrue.è¿˜æœ‰åˆå§‹æ‰“å¼€æ–‡ä»¶çš„æ—¶å€™ï¼Œflagè®¾ç½®ä¸ºtrue
+				/*ç›´æ¥ä¿å­˜ï¼Œä¸éœ€è¦å¼¹å‡ºå¯¹è¯æ¡†*/
+				AddListener.save();
+			}
+			else{//å¦åˆ™ï¼Œè·Ÿå¦å­˜ä¸ºçš„åŠŸèƒ½ä¸€æ ·
+				AddListener.showDiaSave();
+			}
+			
 		} else if (e.getSource().equals(MyFrame.paste)) {
 
 		} 
-//		´ò¿ªÎÄ¼ş
+//		æ‰“å¼€æ–‡ä»¶
 		else if (e.getSource().equals(MyFrame.open)) {
-			/***´ò¿ªÎÄ¼şµÄ¶Ô»°¿ò***/
+			/***æ‰“å¼€æ–‡ä»¶çš„å¯¹è¯æ¡†***/
+			if(MyFrame.flag == true) AddListener.showDiaSave();
 			StringBuffer  text = new StringBuffer();
-			FileDialog fileDia = new FileDialog(MyFrame.myFrame, "´ò¿ªÎÄ¼ş", FileDialog.LOAD);
+			FileDialog fileDia = new FileDialog(MyFrame.myFrame, "æ‰“å¼€æ–‡ä»¶", FileDialog.LOAD);
 			fileDia.setResizable(false);
 			fileDia.setVisible(true);
-			
+			openFile = new File(fileDia.getDirectory(),fileDia.getFile());
+			flag = true;//è¡¨ç¤ºå·²ç»å­˜åœ¨
 			try {
 				file = new File(fileDia.getDirectory(),fileDia.getFile());
 				fr = new FileReader(file);
@@ -121,10 +141,10 @@ class AddListener implements ActionListener {
 			
 		}
 	}
-	/*±£´æÎÄ¼ş**µ¥¶À³öÒ»¸ö·½·¨À´*/
-	public static void save(){
-		JFileChooser chooser = new JFileChooser();
-		int result = chooser.showSaveDialog(MyFrame.myFrame);
+	/*å¦å­˜ä¸ºæ–‡ä»¶**å•ç‹¬å‡ºä¸€ä¸ªæ–¹æ³•æ¥*/
+	public static void showDiaSave(){
+		chooser = new JFileChooser();
+		result = chooser.showSaveDialog(MyFrame.myFrame);
 		if(result == JFileChooser.APPROVE_OPTION){
 			File file = chooser.getSelectedFile();
 			try {
@@ -134,6 +154,18 @@ class AddListener implements ActionListener {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}
+		}
+	}
+	public static void save(){
+		if(result == JFileChooser.APPROVE_OPTION){
+			try {
+				BufferedWriter bw = new BufferedWriter(new FileWriter(openFile));
+				bw.write(MyFrame.area.getText());
+				bw.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 		}
 	}
