@@ -1,7 +1,5 @@
 package frame;
 ////保存，如果与该目录下另一文件重名，就弹出提示.
-////关闭的时候，如果点取消，不要退出去.
-////如果改变了JTextArea内容，这时候点 打开 ，要弹出是否保存对话框.如果是yes,若是已存在的文件，直接保存.若不是，要另存为.
 /**新建.没问题了.MyFrame.flag是用来检测JTextArea内容是否改变
  * 			 AddListener.flag是用来检测是不是已经存在的文件.目前只在 打开 里改变了flag,一打开就说明文件存在，点保存不需要弹出对话框，直接保存.
  * 
@@ -11,6 +9,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -55,6 +54,7 @@ public class MyFrame extends JFrame implements DocumentListener{
 	public static JMenuItem lookforhelp;
 	public static JMenuItem about;
 	public static JTextArea area;
+	public static Clipboard clipboard = new Clipboard("");
 	public static boolean flag = false;
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -71,12 +71,18 @@ public class MyFrame extends JFrame implements DocumentListener{
 				super.windowClosing(e);
 				if(MyFrame.flag==true){//如果JTextArea内容改变了
 					int res = JOptionPane.showConfirmDialog(null, "是否保存","记事本",JOptionPane.YES_NO_CANCEL_OPTION);
-					if(res == JOptionPane.YES_OPTION){/////如果确定（确定保存）
-						AddListener.showDiaSave();
-					}else if(res == JOptionPane.CANCEL_OPTION){/////如果点取消
-						
+					if(res == JOptionPane.YES_OPTION){/////如果确定保存，如果是已经存在的文档
+						if(AddListener.flag == true){
+							AddListener.save();
+						}else{
+							AddListener.showDiaSave();
+						}
+						System.exit(0);
+					}
+					else if(res == JOptionPane.CANCEL_OPTION){/////如果点取消
+						myFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 					}else if(res == JOptionPane.NO_OPTION){/////如果选择不保存
-						//System.exit(0);
+						System.exit(0);
 					}
 				}
 				else{
