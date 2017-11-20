@@ -1,6 +1,7 @@
 package frame;
 
 import java.awt.FileDialog;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -45,23 +46,50 @@ class AddListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getSource().equals(MyFrame.exit)) {
-			if(MyFrame.flag==true){
-				
+			if(MyFrame.flag==true){//如果改变了JTextArea内容，要询问是否保存
+				int res = JOptionPane.showConfirmDialog(null, "是否保存","记事本",JOptionPane.YES_NO_CANCEL_OPTION);
+				if(res == JOptionPane.YES_OPTION){
+					if(flag == true){//如果是已经存在的文档，不需要弹出对话框，直接保存进该文档.
+						AddListener.save();
+					}
+					else{//
+						AddListener.showDiaSave();
+					}
+				}
+				else if(res == JOptionPane.CANCEL_OPTION){
+					
+				}
 			}
 			System.exit(0);
 		} else if (e.getSource().equals(MyFrame.about)) {
 			
-		} else if (e.getSource().equals(MyFrame.all)) {
-
+		}
+		/*全选
+		 * JTextArea有selectAll()方法来实现全选.
+		 * */ 
+		else if (e.getSource().equals(MyFrame.all)) {
+			MyFrame.area.selectAll();
 		}
 		//另存为：是不管是不是之前的，都弹出保存对话框来保存.所以，你的保存方法，应该是另存为的方法才对。晓得了吗。
 		//////另外，如果选择覆盖已经存在的文件，则要弹出对话框是否覆盖。
 		else if (e.getSource().equals(MyFrame.another)) {
 			AddListener.showDiaSave();
-		} else if (e.getSource().equals(MyFrame.copy)) {
-
-		} else if (e.getSource().equals(MyFrame.cut)) {
-
+		} 
+		/*复制功能*/
+		else if (e.getSource().equals(MyFrame.copy)) {
+			String temp = MyFrame.area.getSelectedText();//将选中内容保存到temp变量中
+			StringSelection text = new StringSelection(temp);
+			MyFrame.clipboard.setContents(text, null);//放到它的剪切板上
+		}
+		/*剪切功能*///记录下位置，将start--end替换成空串
+		else if (e.getSource().equals(MyFrame.cut)) {
+			int start = MyFrame.area.getSelectionStart();
+			int end = MyFrame.area.getSelectionEnd();
+			String temp = MyFrame.area.getSelectedText();//将选中内容保存到temp变量中
+			StringSelection text = new StringSelection(temp);
+			MyFrame.clipboard.setContents(text, null);//放到它的剪切板上
+			MyFrame.area.replaceRange("",start,end);
+			
 		} else if (e.getSource().equals(MyFrame.delete)) {
 
 		} else if (e.getSource().equals(MyFrame.font)) {
@@ -103,9 +131,11 @@ class AddListener implements ActionListener {
 					//可能在 Open时，保存下这个文件，flag设置为true.还有初始打开文件的时候，flag设置为true
 				/*直接保存，不需要弹出对话框*/
 				AddListener.save();
+				MyFrame.flag = false;
 			}
 			else{//否则，跟另存为的功能一样
 				AddListener.showDiaSave();
+				MyFrame.flag = false;
 			}
 			
 		} else if (e.getSource().equals(MyFrame.paste)) {
@@ -114,7 +144,7 @@ class AddListener implements ActionListener {
 //		打开文件
 		else if (e.getSource().equals(MyFrame.open)) {
 			/***打开文件的对话框***/
-			if(MyFrame.flag == true){
+			if(MyFrame.flag == true){//如果JTextArea内容改变
 				int res = JOptionPane.showConfirmDialog(null, "是否保存","记事本",JOptionPane.YES_NO_CANCEL_OPTION);
 				if(res == JOptionPane.YES_OPTION){
 					if(flag == true){//如果是已经存在的文件
@@ -122,17 +152,19 @@ class AddListener implements ActionListener {
 					}else{
 						AddListener.showDiaSave();
 					}	
-					MyFrame.flag = false;
 					new AddListener().openFile();
+					MyFrame.flag = false;//打开之后才设置为false
 				}
 				else if(res == JOptionPane.CANCEL_OPTION){
 					
 				}else if(res == JOptionPane.NO_OPTION){
 					new AddListener().openFile();
+					MyFrame.flag = false;//打开之后才设置为false
 				}
 			}
 			else{
 				new AddListener().openFile();
+				MyFrame.flag = false;//打开之后才设置为false
 			}
 		}
 	}
@@ -165,11 +197,14 @@ class AddListener implements ActionListener {
 			}
 		}
 	}
+	/*打开文件的方法*/
 	public void openFile(){
 		StringBuffer  text = new StringBuffer();
 		FileDialog fileDia = new FileDialog(MyFrame.myFrame, "打开文件", FileDialog.LOAD);
 		fileDia.setResizable(false);
 		fileDia.setVisible(true);
+		//如果在打开文件对话框内不想打开了，点取消，保证不会出错。（如果没有下边这一行代码就会出错）
+		if(fileDia.getDirectory()==null || fileDia.getFile()== null)return;
 		openFile = new File(fileDia.getDirectory(),fileDia.getFile());
 		flag = true;//表示已经存在
 		try {
@@ -190,4 +225,7 @@ class AddListener implements ActionListener {
 		}
 		MyFrame.area.setText(text.toString());
 	}
+/*	如果改变了JTextArea内容，询问是否保存，如果选择是，查看是不是已经存在的文档，如果是已经存在的文档，就直接保存。否则，弹出另存为对话框
+	public void isChangedExisted(){
+	}*/
 }
