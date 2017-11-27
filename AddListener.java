@@ -1,16 +1,10 @@
 package frame;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FileDialog;
 import java.awt.Toolkit;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -18,7 +12,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -36,7 +29,6 @@ class AddListener implements ActionListener{
 	public static int result;
 	public static File openFile;
 	public static boolean flag = false;
-
 	public void addListener() {
 		MyFrame.exit.addActionListener(this);
 		MyFrame.about.addActionListener(this);
@@ -119,11 +111,11 @@ class AddListener implements ActionListener{
 		}
 		/*点击字体，弹出字体对话框.自己写的字体对话框类.*/ 
 		else if (e.getSource().equals(MyFrame.font)) {
-			/*FontDia fontDia = new FontDia();
-			fontDia.addComponent();
-			fontDia.setVisible(true);*/
-			FontChooserDialog f = new FontChooserDialog();
-			f.setVisible(true);
+			FontDia.fontDia = new FontDia();
+			FontDia.fontDia.addComponent();
+			FontDia.fontDia.setVisible(true);
+//			FontChooserDialog f = new FontChooserDialog();
+//			f.setVisible(true);
 		} else if (e.getSource().equals(MyFrame.lookforhelp)) {
 
 		}
@@ -148,7 +140,13 @@ class AddListener implements ActionListener{
 				MyFrame.area.setText("");
 			}
 		} else if (e.getSource().equals(MyFrame.undo)) {
-			MyFrame.undoMgr.undo();
+			if(!MyFrame.undoMgr.canUndo()){
+				
+			}
+			else{
+				MyFrame.undoMgr.undo();
+			}
+			
 		} else if (e.getSource().equals(MyFrame.status)) {
 			
 			if(MyFrame.label.isVisible()){//如果它可见，就把它设置为不可见的
@@ -213,6 +211,7 @@ class AddListener implements ActionListener{
 			try {
 				BufferedWriter bw = new BufferedWriter(new FileWriter(file));
 				bw.write(MyFrame.area.getText());
+				
 				bw.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -227,6 +226,8 @@ class AddListener implements ActionListener{
 			try {
 				BufferedWriter bw = new BufferedWriter(new FileWriter(openFile));
 				bw.write(MyFrame.area.getText());
+				MyFrame.area.setFont(FontDia.areaFont);
+				
 				bw.close();
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
@@ -265,7 +266,8 @@ class AddListener implements ActionListener{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		MyFrame.area.setFont(FontDia.areaFont);
 		MyFrame.area.setText(text.toString());
-		//MyFrame.area.setFont(FontChooserDialog.lastFont);
+		
 	}
 }
