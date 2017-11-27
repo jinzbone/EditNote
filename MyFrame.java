@@ -1,7 +1,8 @@
 package frame;
-
+/*待改进*/
 ////保存，如果与该目录下另一文件重名，就弹出提示.
-////设置完字体之后，再打开字体对话框，默认选中的是上次修改之后的内容.（也就是当前字体）
+////保存文本时，没法把对应改后的字体也保存，并下次打开的时候也显示出该字体来.
+////布局
 /**新建.没问题了.MyFrame.flag是用来检测JTextArea内容是否改变
  * 			 AddListener.flag是用来检测是不是已经存在的文件.目前只在 打开 里改变了flag,一打开就说明文件存在，点保存不需要弹出对话框，直接保存.
  * 
@@ -9,12 +10,14 @@ package frame;
  * **/
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.prefs.Preferences;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -199,7 +202,14 @@ public class MyFrame extends JFrame implements DocumentListener {
 
 		/************ JTextArea ***************/
 		area = new JTextArea("");
-		//area.setFont(FontChooserDialog.lastFont);
+//		Preferences p = FontDia.prefs;
+//		if(p.get(FontDia.fontKind, "")!=""){
+//			area.setFont(new Font(p.get(FontDia.fontKind,""),p.getInt(FontDia.styleKind,0),p.getInt(FontDia.sizeKind, 0)));;
+//		}
+//		else
+//			area.setFont(new Font("宋体",Font.PLAIN,18));
+		area.setFont(new Font("宋体",Font.PLAIN,18));
+		
 		myFrame.add(area);
 		JScrollPane scroller = new JScrollPane(area);
 		scroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -226,5 +236,4 @@ public class MyFrame extends JFrame implements DocumentListener {
 		// TODO Auto-generated method stub
 		flag = true;
 	}
-
 }
