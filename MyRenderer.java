@@ -18,18 +18,18 @@ public class MyRenderer extends DefaultListCellRenderer{
 		// TODO Auto-generated method stub
 		super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 		if(list.equals(FontDia.fontList)){
-			if(index == 0)setFont(new Font("¿¬Ìå",Font.PLAIN,FONTSIZE));
-			else if(index == 1)setFont(new Font("ºÚÌå",Font.PLAIN,FONTSIZE));
-			else if(index == 2)setFont(new Font("ËÎÌå",Font.PLAIN,FONTSIZE));
-			else if(index == 3)setFont(new Font("Î¢ÈíÑÅºÚ",Font.PLAIN,FONTSIZE));
-			else if(index == 4)setFont(new Font("·ÂËÎ",Font.PLAIN,FONTSIZE));
+			if(index == 0)setFont(new Font("æ¥·ä½“",Font.PLAIN,FONTSIZE));
+			else if(index == 1)setFont(new Font("é»‘ä½“",Font.PLAIN,FONTSIZE));
+			else if(index == 2)setFont(new Font("å®‹ä½“",Font.PLAIN,FONTSIZE));
+			else if(index == 3)setFont(new Font("å¾®è½¯é›…é»‘",Font.PLAIN,FONTSIZE));
+			else if(index == 4)setFont(new Font("ä»¿å®‹",Font.PLAIN,FONTSIZE));
 			return this;
 		}
 		else if(list.equals(FontDia.styleList)){
-			if(index == 0)setFont(new Font("ËÎÌå",Font.PLAIN,FONTSIZE));
-			else if(index == 1)setFont(new Font("ËÎÌå",Font.BOLD,FONTSIZE));
-			else if(index == 2)setFont(new Font("ËÎÌå",Font.ITALIC,FONTSIZE));
-			else if(index == 3)setFont(new Font("ËÎÌå",Font.BOLD + Font.ITALIC,FONTSIZE));
+			if(index == 0)setFont(new Font("å®‹ä½“",Font.PLAIN,FONTSIZE));
+			else if(index == 1)setFont(new Font("å®‹ä½“",Font.BOLD,FONTSIZE));
+			else if(index == 2)setFont(new Font("å®‹ä½“",Font.ITALIC,FONTSIZE));
+			else if(index == 3)setFont(new Font("å®‹ä½“",Font.BOLD + Font.ITALIC,FONTSIZE));
 			return this;
 		}
 		else{
